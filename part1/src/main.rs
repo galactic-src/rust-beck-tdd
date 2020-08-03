@@ -1,3 +1,13 @@
+struct Dollar {
+    amount: u32
+}
+
+impl Dollar {
+    fn times(&mut self, multiplier: u32) {
+        self.amount = 10;
+    }
+}
+
 fn main() {
 
 }
