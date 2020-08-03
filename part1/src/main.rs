@@ -18,8 +18,10 @@ mod tests {
 
     #[test]
     fn testMultiplication() {
-        let mut five = Dollar {amount: 5};
-        five.times(2);
-        assert_eq!(10, five.amount)
+        let five = Dollar {amount: 5};
+        let mut product = five.times(2);
+        assert_eq!(10, product.amount);
+        product = five.times(3);
+        assert_eq!(15, product.amount);
     }
 }
