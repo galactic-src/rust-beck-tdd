@@ -3,8 +3,8 @@ struct Dollar {
 }
 
 impl Dollar {
-    fn times(&mut self, multiplier: u32) {
-        self.amount *= multiplier;
+    fn times(&self, multiplier: u32) -> Dollar {
+        return Dollar { amount: self.amount * multiplier };
     }
 }
 
