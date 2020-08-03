@@ -4,7 +4,7 @@ struct Dollar {
 
 impl Dollar {
     fn times(&mut self, multiplier: u32) {
-        self.amount = 10;
+        self.amount = 5 * 2;
     }
 }
 
