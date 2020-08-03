@@ -7,8 +7,12 @@ struct Dollar {
 }
 
 impl Dollar {
+    fn new(amount: u32) -> Dollar {
+        Dollar { amount }
+    }
+
     fn times(&self, multiplier: u32) -> Dollar {
-        return Dollar { amount: self.amount * multiplier };
+        return Dollar::new( &self.amount * multiplier );
     }
 }
 

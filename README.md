@@ -22,3 +22,7 @@ Design objections (e.g. side effects) may form new test cases, or modify existin
 ##### Chapter 3 - Equality for All
 
 Triangulation approach: generalising code when we have 2 examples or more (at which point the general solution is also the simplest).
+Recommended as a backup when unsure how to refactor. Makes *axes of variability* more explicit.
+
+##### Chapter 4 - Privacy
+
