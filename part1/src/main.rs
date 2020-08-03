@@ -1,3 +1,7 @@
+use std::cmp::PartialEq;
+
+
+#[derive(PartialEq)]
 struct Dollar {
     amount: u32
 }
@@ -17,7 +21,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn testMultiplication() {
+    fn test_multiplication() {
         let five = Dollar {amount: 5};
         let mut product = five.times(2);
         assert_eq!(10, product.amount);
@@ -26,7 +30,7 @@ mod tests {
     }
 
     #[test]
-    fn testEquality() {
+    fn test_equality() {
         assert!(Dollar { amount: 5 } == Dollar { amount: 5 });
         assert!(Dollar { amount: 5 } != Dollar { amount: 6 });
     }
