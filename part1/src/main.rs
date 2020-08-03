@@ -24,4 +24,10 @@ mod tests {
         product = five.times(3);
         assert_eq!(15, product.amount);
     }
+
+    #[test]
+    fn testEquality() {
+        assert!(Dollar { amount: 5 } == Dollar { amount: 5 });
+        assert!(Dollar { amount: 5 } != Dollar { amount: 6 });
+    }
 }
