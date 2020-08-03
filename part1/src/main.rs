@@ -16,6 +16,21 @@ impl Dollar {
     }
 }
 
+#[derive(PartialEq, Debug)]
+struct Franc {
+    amount: u32
+}
+
+impl Franc {
+    fn new(amount: u32) -> Franc {
+        Franc { amount }
+    }
+
+    fn times(&self, multiplier: u32) -> Franc {
+        return Franc::new( &self.amount * multiplier );
+    }
+}
+
 fn main() {
 
 }
