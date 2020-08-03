@@ -7,7 +7,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn dummy() {
-        assert_eq!(1, 1);
+    fn testMultiplication() {
+        let mut five = Dollar {amount: 5};
+        five.times(2);
+        assert_eq!(10, five.amount)
     }
 }
