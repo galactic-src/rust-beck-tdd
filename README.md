@@ -35,3 +35,8 @@ Consider whether utilities made in prod code could make tests more readable.
 
 ##### Chapter 5 - Franc-ly speaking
 
+Copy/paste of test and code to create a new currency type.
+Interesting chapter because it takes a test which feels out of reach, and chooses an approach to get us closer to that goal.
+This is often the tough bit of coding for testable code that makes for small, reviewable PRs:
+working out what bitesize bit you can implement next without it spiralling into a big change.
+I wonder whether TDD might makes it easier or harder to get to a sensible PR point. It feels more exploratory and so less contained.
