@@ -1,7 +1,7 @@
 use std::cmp::PartialEq;
 
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 struct Dollar {
     amount: u32
 }
@@ -27,10 +27,8 @@ mod tests {
     #[test]
     fn test_multiplication() {
         let five = Dollar::new(5);
-        let mut product = five.times(2);
-        assert_eq!(10, product.amount);
-        product = five.times(3);
-        assert_eq!(15, product.amount);
+        assert_eq!(Dollar::new(10), five.times(2));
+        assert_eq!(Dollar::new(15), five.times(3));
     }
 
     #[test]
