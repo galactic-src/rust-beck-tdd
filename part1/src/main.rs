@@ -1,6 +1,6 @@
 use std::cmp::PartialEq;
 
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 enum Currency {
     Dollar,
     Franc
@@ -8,6 +8,7 @@ enum Currency {
 
 trait Money {
     fn currency(&self) -> &Currency;
+    fn times(&self, multiplier: u32) -> Self;
 }
 
 #[derive(PartialEq, Debug)]
@@ -16,15 +17,12 @@ struct Dollar {
     currency: Currency
 }
 
-impl Dollar {
-    fn times(&self, multiplier: u32) -> Dollar {
-        MoneyImpl::dollar( &self.amount * multiplier )
-    }
-}
-
 impl Money for Dollar {
     fn currency(&self) -> &Currency {
         &self.currency
+    }
+    fn times(&self, multiplier: u32) -> Dollar {
+        MoneyImpl::dollar( &self.amount * multiplier )
     }
 }
 
@@ -35,18 +33,22 @@ struct Franc {
 }
 
 impl Franc {
-    fn times(&self, multiplier: u32) -> Franc {
-        MoneyImpl::franc( &self.amount * multiplier )
-    }
 }
 
 impl Money for Franc {
     fn currency(&self) -> &Currency {
         &self.currency
     }
+    fn times(&self, multiplier: u32) -> Franc {
+        MoneyImpl::franc( &self.amount * multiplier )
+    }
 }
 
-struct MoneyImpl {}
+#[derive(PartialEq, Debug)]
+struct MoneyImpl {
+    amount: u32,
+    currency: Currency
+}
 
 impl MoneyImpl {
     fn franc(amount: u32) -> Franc {
@@ -55,6 +57,16 @@ impl MoneyImpl {
 
     fn dollar(amount: u32) -> Dollar {
         Dollar { amount, currency: Currency::Dollar }
+    }
+}
+
+impl Money for MoneyImpl{
+    fn currency(&self) -> &Currency {
+        &self.currency
+    }
+
+    fn times(&self, multiplier: u32) -> MoneyImpl {
+        MoneyImpl { amount: &self.amount * multiplier, currency: self.currency.clone() }
     }
 }
 
