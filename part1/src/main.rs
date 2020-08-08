@@ -12,51 +12,18 @@ trait Money {
 }
 
 #[derive(PartialEq, Debug)]
-struct Dollar {
-    amount: u32,
-    currency: Currency
-}
-
-impl Money for Dollar {
-    fn currency(&self) -> &Currency {
-        &self.currency
-    }
-    fn times(&self, multiplier: u32) -> Dollar {
-        MoneyImpl::dollar( &self.amount * multiplier )
-    }
-}
-
-#[derive(PartialEq, Debug)]
-struct Franc {
-    amount: u32,
-    currency: Currency
-}
-
-impl Franc {
-}
-
-impl Money for Franc {
-    fn currency(&self) -> &Currency {
-        &self.currency
-    }
-    fn times(&self, multiplier: u32) -> Franc {
-        MoneyImpl::franc( &self.amount * multiplier )
-    }
-}
-
-#[derive(PartialEq, Debug)]
 struct MoneyImpl {
     amount: u32,
     currency: Currency
 }
 
 impl MoneyImpl {
-    fn franc(amount: u32) -> Franc {
-        Franc { amount, currency: Currency::Franc }
+    fn franc(amount: u32) -> MoneyImpl {
+        MoneyImpl { amount, currency: Currency::Franc }
     }
 
-    fn dollar(amount: u32) -> Dollar {
-        Dollar { amount, currency: Currency::Dollar }
+    fn dollar(amount: u32) -> MoneyImpl {
+        MoneyImpl { amount, currency: Currency::Dollar }
     }
 }
 
