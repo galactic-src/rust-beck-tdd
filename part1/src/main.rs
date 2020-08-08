@@ -1,14 +1,19 @@
 use std::cmp::PartialEq;
 
+enum Currency {
+    Dollar,
+    Franc
+}
 
 #[derive(PartialEq, Debug)]
 struct Dollar {
-    amount: u32
+    amount: u32,
+    currency: Currency
 }
 
 impl Dollar {
     fn new(amount: u32) -> Dollar {
-        Dollar { amount }
+        Dollar { amount, currency: Currency::Dollar }
     }
 
     fn times(&self, multiplier: u32) -> Dollar {
@@ -18,12 +23,13 @@ impl Dollar {
 
 #[derive(PartialEq, Debug)]
 struct Franc {
-    amount: u32
+    amount: u32,
+    currency: Currency
 }
 
 impl Franc {
     fn new(amount: u32) -> Franc {
-        Franc { amount }
+        Franc { amount, currency: Currency::Franc }
     }
 
     fn times(&self, multiplier: u32) -> Franc {
@@ -57,5 +63,7 @@ mod tests {
     fn test_equality() {
         assert!(Dollar::new(5) == Dollar::new(5));
         assert!(Dollar::new(5) != Dollar::new(6));
+        assert!(Franc::new(5) == Franc::new(5));
+        assert!(Franc::new(5) != Franc::new(6));
     }
 }

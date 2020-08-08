@@ -40,3 +40,11 @@ Interesting chapter because it takes a test which feels out of reach, and choose
 This is often the tough bit of coding for testable code that makes for small, reviewable PRs:
 working out what bitesize bit you can implement next without it spiralling into a big change.
 I wonder whether TDD might makes it easier or harder to get to a sensible PR point. It feels more exploratory and so less contained.
+
+##### Chapters 6/7 - Equality for All, Redux/Chapter 7 - Apples and Oranges
+
+Chapter 6 takes the common equals code into a superclass. We don't have common equals code, so there's nothing to do.
+Chapter 7 requires that equals take class into account. In a way this is a little like a two-part triangulation to get equals working.
+Again, we get this behaviour for free by using separate structs - we can simply add a test.
+
+##### Chapter 
