@@ -1,5 +1,6 @@
 use std::cmp::PartialEq;
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 enum Currency {
     Dollar,
     Franc
@@ -16,12 +17,8 @@ struct Dollar {
 }
 
 impl Dollar {
-    fn new(amount: u32) -> Dollar {
-        Dollar { amount, currency: Currency::Dollar }
-    }
-
     fn times(&self, multiplier: u32) -> Dollar {
-        return Dollar::new( &self.amount * multiplier );
+        MoneyImpl::dollar( &self.amount * multiplier )
     }
 }
 
@@ -38,18 +35,26 @@ struct Franc {
 }
 
 impl Franc {
-    fn new(amount: u32) -> Franc {
-        Franc { amount, currency: Currency::Franc }
-    }
-
     fn times(&self, multiplier: u32) -> Franc {
-        return Franc::new( &self.amount * multiplier );
+        MoneyImpl::franc( &self.amount * multiplier )
     }
 }
 
 impl Money for Franc {
     fn currency(&self) -> &Currency {
         &self.currency
+    }
+}
+
+struct MoneyImpl {}
+
+impl MoneyImpl {
+    fn franc(amount: u32) -> Franc {
+        Franc { amount, currency: Currency::Franc }
+    }
+
+    fn dollar(amount: u32) -> Dollar {
+        Dollar { amount, currency: Currency::Dollar }
     }
 }
 
@@ -63,23 +68,23 @@ mod tests {
 
     #[test]
     fn test_multiplication() {
-        let five = Dollar::new(5);
-        assert_eq!(Dollar::new(10), five.times(2));
-        assert_eq!(Dollar::new(15), five.times(3));
+        let five = MoneyImpl::dollar(5);
+        assert_eq!(MoneyImpl::dollar(10), five.times(2));
+        assert_eq!(MoneyImpl::dollar(15), five.times(3));
     }
 
     #[test]
     fn test_franc_multiplication() {
-        let five = Franc::new(5);
-        assert_eq!(Franc::new(10), five.times(2));
-        assert_eq!(Franc::new(15), five.times(3));
+        let five = MoneyImpl::franc(5);
+        assert_eq!(MoneyImpl::franc(10), five.times(2));
+        assert_eq!(MoneyImpl::franc(15), five.times(3));
     }
 
     #[test]
     fn test_equality() {
-        assert!(Dollar::new(5) == Dollar::new(5));
-        assert!(Dollar::new(5) != Dollar::new(6));
-        assert!(Franc::new(5) == Franc::new(5));
-        assert!(Franc::new(5) != Franc::new(6));
+        assert!(MoneyImpl::dollar(5) == MoneyImpl::dollar(5));
+        assert!(MoneyImpl::dollar(5) != MoneyImpl::dollar(6));
+        assert!(MoneyImpl::franc(5) == MoneyImpl::franc(5));
+        assert!(MoneyImpl::franc(5) != MoneyImpl::franc(6));
     }
 }
