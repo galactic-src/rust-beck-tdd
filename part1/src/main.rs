@@ -6,11 +6,6 @@ enum Currency {
     Franc
 }
 
-trait Money {
-    fn currency(&self) -> &Currency;
-    fn times(&self, multiplier: u32) -> Self;
-}
-
 #[derive(PartialEq, Debug)]
 struct MoneyImpl {
     amount: u32,
@@ -24,12 +19,6 @@ impl MoneyImpl {
 
     fn dollar(amount: u32) -> MoneyImpl {
         MoneyImpl { amount, currency: Currency::Dollar }
-    }
-}
-
-impl Money for MoneyImpl{
-    fn currency(&self) -> &Currency {
-        &self.currency
     }
 
     fn times(&self, multiplier: u32) -> MoneyImpl {
