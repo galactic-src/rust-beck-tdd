@@ -41,10 +41,27 @@ This is often the tough bit of coding for testable code that makes for small, re
 working out what bitesize bit you can implement next without it spiralling into a big change.
 I wonder whether TDD might makes it easier or harder to get to a sensible PR point. It feels more exploratory and so less contained.
 
-##### Chapters 6/7 - Equality for All, Redux/Chapter 7 - Apples and Oranges
+##### Chapter 6 - Equality for All, Redux
 
-Chapter 6 takes the common equals code into a superclass. We don't have common equals code, so there's nothing to do.
-Chapter 7 requires that equals take class into account. In a way this is a little like a two-part triangulation to get equals working.
+Takes the common equals code into a superclass. We don't have common equals code, so there's nothing to do.
+
+##### Chapter 7 - Apples and Oranges
+
+Requires that equals take class into account. In a way this is a little like a two-part triangulation to get equals working.
 Again, we get this behaviour for free by using separate structs - we can simply add a test.
 
-##### Chapter 
+##### Chapter 8 - Makin' Objects
+
+Unifies return type on Dollar/Franc to Money, makes Money abstract and types as Money in tests. This is similar to the approach I took in maaking factory methods. I'm not sure how you justify changing the test code this way from a TDD perspective - is it removing duplicate code?
+
+##### Chapter 9 - Times We're Livin' In
+
+Introduces Strings as a way to distinguish Money instances, in a similar way to my enum. This lets us delegate both constructors to super constructor as they are now identical.
+
+##### Chapter 10 - Interesting Times
+
+Permits toString() implementation without test on grounds we would immediately see result. Money.equals() is updated to take the currency string into account.
+
+##### Chapter 11 - The Root Of All Evil
+
+Eliminates the two subclasses leaving only money. So he has demonstrated that it is possible to migrate in incremental steps from two separate classes to a single unified class.
