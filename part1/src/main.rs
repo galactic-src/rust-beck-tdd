@@ -39,8 +39,11 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_plus() {
-        let sum = Money::dollar(5).plus(Money::dollar(5));
+    fn test_simple_addition() {
+        let five = Money::dollar(5);
+        let expression = five.plus(five);
+        let bank = Bank.new();
+        let reduced = bank.reduce(sum, Currency::Dollar);
         assert_eq!(Money::dollar(10), sum);
     }
 
