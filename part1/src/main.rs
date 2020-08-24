@@ -24,6 +24,10 @@ impl Money {
     fn times(&self, multiplier: u32) -> Money {
         Money { amount: &self.amount * multiplier, currency: self.currency.clone() }
     }
+
+    fn plus(&self, addend: Money) -> Money {
+        return Money { amount: self.amount + addend.amount, currency: self.currency.clone() };
+    }
 }
 
 fn main() {
@@ -33,6 +37,12 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_plus() {
+        let sum = Money::dollar(5).plus(Money::dollar(5));
+        assert_eq!(Money::dollar(10), sum);
+    }
 
     #[test]
     fn test_multiplication() {
