@@ -65,3 +65,10 @@ Permits toString() implementation without test on grounds we would immediately s
 ##### Chapter 11 - The Root Of All Evil
 
 Eliminates the two subclasses leaving only money. So he has demonstrated that it is possible to migrate in incremental steps from two separate classes to a single unified class.
+
+##### Chapter 12 - Addition, Finally
+
+I wouldn't have gone with Bank, because it feels like invoking an entity that isn't really there in our domain.
+However, maybe it's a good choice, because it's a familiar object with a bit of personality. Might make the world easier to understand.
+
+Quote: "I try to keep the objects at the heart as ignorant of the rest of the world as possible, so they stay flexible as long as possible (and remain easy to test, and reuse, and understand).
