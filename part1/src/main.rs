@@ -6,11 +6,7 @@ enum Currency {
     Franc
 }
 
-trait Expression {
-
-}
-
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Clone)]
 struct Money {
     amount: u32,
     currency: Currency
@@ -29,18 +25,24 @@ impl Money {
         Money { amount: &self.amount * multiplier, currency: self.currency.clone() }
     }
 
-    fn plus(&self, addend: &Money) -> Money {
-        return Money { amount: self.amount + addend.amount, currency: self.currency.clone() };
+    fn plus(&self, addend: &Money) -> Sum {
+        Sum {
+            augend: self.clone(),
+            addend: addend.clone()
+        }
     }
 }
 
-impl Expression for Money {}
+struct Sum {
+    augend: Money,
+    addend: Money
+}
 
 struct Bank {}
 
 impl Bank {
-    fn reduce(&self, source: Box<dyn Expression>, to: Currency) -> Money {
-        Money::dollar(10)
+    fn reduce(&self, source: &Sum, to: &Currency) -> Money {
+        Money { amount: source.addend.amount.clone() + source.augend.amount.clone(), currency: to.clone() }
     }
 }
 
@@ -57,7 +59,7 @@ mod tests {
         let five = Money::dollar(5);
         let expression = five.plus(&five);
         let bank = Bank{};
-        let reduced = bank.reduce(Box::new(expression), Currency::Dollar);
+        let reduced = bank.reduce(&expression, &Currency::Dollar);
         assert_eq!(Money::dollar(10), reduced);
     }
 
