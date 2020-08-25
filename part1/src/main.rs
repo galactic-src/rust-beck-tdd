@@ -85,4 +85,12 @@ mod tests {
         assert!(Money::franc(5) == Money::franc(5));
         assert!(Money::franc(5) != Money::franc(6));
     }
+
+    #[test]
+    fn test_reduce_money_different_currency() {
+        let bank = Bank {};
+        bank.add_rate(Currency::Franc, Currency::Dollar, 2);
+        let result = bank.reduce(Money::franc(2), Currency::Dollar);
+        assert_eq!(Money::dollar(1), result);
+    }
 }

@@ -78,3 +78,4 @@ Quote: "I try to keep the objects at the heart as ignorant of the rest of the wo
 Carry out reducing a sum on the Bank object, using a Sum as a type of expression.
 In Rust it makes more sense to just handle Sums for now and later create an Expression enum.
 
+##### Chapter 14 - Change
