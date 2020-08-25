@@ -72,3 +72,9 @@ I wouldn't have gone with Bank, because it feels like invoking an entity that is
 However, maybe it's a good choice, because it's a familiar object with a bit of personality. Might make the world easier to understand.
 
 Quote: "I try to keep the objects at the heart as ignorant of the rest of the world as possible, so they stay flexible as long as possible (and remain easy to test, and reuse, and understand).
+
+##### Chapter 13 - Make it
+
+Carry out reducing a sum on the Bank object, using a Sum as a type of expression.
+In Rust it makes more sense to just handle Sums for now and later create an Expression enum.
+

@@ -64,6 +64,14 @@ mod tests {
     }
 
     #[test]
+    fn test_reduce_sum() {
+        let sum = Sum { augend: Money::dollar(3), addend: Money::dollar(4) };
+        let bank = Bank {};
+        let result = bank.reduce(&sum, &Currency::Dollar);
+        assert_eq!(Money::dollar(7), result);
+    }
+
+    #[test]
     fn test_multiplication() {
         let five = Money::dollar(5);
         assert_eq!(Money::dollar(10), five.times(2));
