@@ -25,24 +25,36 @@ impl Money {
         Money { amount: &self.amount * multiplier, currency: self.currency.clone() }
     }
 
-    fn plus(&self, addend: &Money) -> Sum {
-        Sum {
+    fn plus(&self, addend: &Money) -> Expression {
+        Expression::Sum {
             augend: self.clone(),
             addend: addend.clone()
         }
     }
+
+    fn reduce(&self, to: &Currency) -> Money {
+        let rate =
+            if self.currency == Currency::Franc && to == &Currency::Dollar { 2 }
+            else { 1 };
+        Money { amount: self.amount.clone() / rate, currency: to.clone() }
+    }
 }
 
-struct Sum {
-    augend: Money,
-    addend: Money
+enum Expression {
+    Money {money: Money},
+    Sum {augend: Money, addend: Money}
 }
 
 struct Bank {}
 
 impl Bank {
-    fn reduce(&self, source: &Sum, to: &Currency) -> Money {
-        Money { amount: source.addend.amount.clone() + source.augend.amount.clone(), currency: to.clone() }
+    fn reduce(&self, source: &Expression, to: &Currency) -> Money {
+        match source {
+            Expression::Money { money} => money.clone(),
+            Expression::Sum { augend, addend } =>
+                Money { amount: addend.amount.clone() + augend.amount.clone(), currency: to.clone() }
+        }
+
     }
 }
 
@@ -65,7 +77,7 @@ mod tests {
 
     #[test]
     fn test_reduce_sum() {
-        let sum = Sum { augend: Money::dollar(3), addend: Money::dollar(4) };
+        let sum = Expression::Sum { augend: Money::dollar(3), addend: Money::dollar(4) };
         let bank = Bank {};
         let result = bank.reduce(&sum, &Currency::Dollar);
         assert_eq!(Money::dollar(7), result);
@@ -90,7 +102,7 @@ mod tests {
     fn test_reduce_money_different_currency() {
         let bank = Bank {};
         bank.add_rate(Currency::Franc, Currency::Dollar, 2);
-        let result = bank.reduce(Money::franc(2), Currency::Dollar);
+        let result = bank.reduce( &Expression::Money { money: Money::franc(2) }, &Currency::Dollar);
         assert_eq!(Money::dollar(1), result);
     }
 }
