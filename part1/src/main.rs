@@ -36,6 +36,7 @@ impl Money {
     }
 }
 
+#[derive(Clone)]
 enum Expression {
     Money {money: Money},
     Sum {augend: Box<Expression>, addend: Box<Expression>}
@@ -53,6 +54,13 @@ impl Expression {
                     amount: &augend.reduce(bank, to).amount + &addend.reduce(bank, to).amount,
                     currency: Currency::Dollar
                 }
+        }
+    }
+
+    fn plus(&self, addend: &Expression) -> Expression {
+        Expression::Sum {
+            augend: Box::new( self.clone() ),
+            addend: Box::new( addend.clone() )
         }
     }
 }
