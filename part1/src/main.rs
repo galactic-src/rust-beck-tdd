@@ -23,13 +23,9 @@ impl Money {
     fn dollar(amount: Amount) -> Money {
         Money { amount, currency: Currency::Dollar }
     }
-
-    fn times(&self, multiplier: Amount) -> Money {
-        Money { amount: &self.amount * multiplier, currency: self.currency.clone() }
-    }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 enum Expression {
     Money {money: Money},
     Sum {augend: Box<Expression>, addend: Box<Expression>}
@@ -55,6 +51,21 @@ impl Expression {
             augend: Box::new( self.clone() ),
             addend: Box::new( addend.clone() )
         }
+    }
+
+    fn times(&self, multiplier: Amount) -> Expression {
+        match self {
+            Expression::Money{money} => {
+                Expression::Money{money: Money { amount: &money.amount * multiplier, currency: money.currency.clone() }}
+            }
+            Expression::Sum{ augend, addend} => {
+                Expression::Sum {
+                    augend: Box::new(augend.times(multiplier.clone())),
+                    addend: Box::new(addend.times(multiplier.clone()))
+                }
+            }
+        }
+
     }
 }
 
@@ -122,9 +133,9 @@ mod tests {
 
     #[test]
     fn test_multiplication() {
-        let five = Money::dollar(5);
-        assert_eq!(Money::dollar(10), five.times(2));
-        assert_eq!(Money::dollar(15), five.times(3));
+        let five = Expression::Money{money: Money::dollar(5)};
+        assert_eq!(Expression::Money{money: Money::dollar(10)}, five.times(2));
+        assert_eq!(Expression::Money{money: Money::dollar(15)}, five.times(3));
     }
 
     #[test]
