@@ -27,13 +27,6 @@ impl Money {
     fn times(&self, multiplier: Amount) -> Money {
         Money { amount: &self.amount * multiplier, currency: self.currency.clone() }
     }
-
-    fn plus(&self, addend: &Money) -> Expression {
-        Expression::Sum {
-            augend: Box::new(Expression::Money { money: self.clone() }),
-            addend: Box::new(Expression::Money { money: addend.clone() })
-        }
-    }
 }
 
 #[derive(Clone)]
@@ -112,7 +105,7 @@ mod tests {
 
     #[test]
     fn test_simple_addition() {
-        let five = Money::dollar(5);
+        let five = Expression::Money {money: Money::dollar(5)};
         let expression = five.plus(&five);
         let bank = Bank::new();
         let reduced = bank.reduce(&expression, &Currency::Dollar);
@@ -159,8 +152,8 @@ mod tests {
 
     #[test]
     fn test_mixed_addition() {
-        let five_bucks = Money::dollar(5);
-        let ten_francs = Money::franc(10);
+        let five_bucks = Expression::Money {money: Money::dollar(5)};
+        let ten_francs = Expression::Money {money: Money::franc(10)};
         let mut bank = Bank::new();
         bank.add_rate(Currency::Franc, Currency::Dollar, 2);
 
