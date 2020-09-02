@@ -80,14 +80,15 @@ In Rust it makes more sense to just handle Sums for now and later create an Expr
 
 ##### Chapter 14 - Change
 
+The test at the start includes the add_rate method, which doesn't get implemented until the last page of the chapter.
 Introduces a HashMap of pairs to values. This feels a little complex to me, and a shame Pairs need implementing.
 
 ##### Chapter 15 - Mixed Currencies
 
-Feels a little like you need to debug your own code by putting in the dummy implementations. Finding it hard to slow down enough.
-Also I suspect if you have experience working in the expressions domain you'll have a fair idea of how you want to implement it.
+Feels a little like you need to debug your own code after putting in the dummy implementations, unless they are resolved fairly quickly.
+Finding it hard to slow down enough! Also I suspect if you have experience working in the expressions domain you'll have a fair idea of how you want to implement it.
 
-##### Chapter 16 - Absraction, Finally
+##### Chapter 16 - Abstraction, Finally
 
 Spotting duplication between your code and test code requires you not to move on until you are satisfied you have removed duplication.
 You need to be disciplined about how much you are working on at once, and avoid rabbit holes that leave a trail of dummy implementations.

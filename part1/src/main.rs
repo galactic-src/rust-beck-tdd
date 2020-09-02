@@ -1,28 +1,30 @@
 use std::cmp::PartialEq;
 use std::collections::HashMap;
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Hash, Eq, Clone, Debug, PartialEq)]
 enum Currency {
     Dollar,
     Franc
 }
 
+type Amount = u32;
+
 #[derive(PartialEq, Debug, Clone)]
 struct Money {
-    amount: u32,
+    amount: Amount,
     currency: Currency
 }
 
 impl Money {
-    fn franc(amount: u32) -> Money {
+    fn franc(amount: Amount) -> Money {
         Money { amount, currency: Currency::Franc }
     }
 
-    fn dollar(amount: u32) -> Money {
+    fn dollar(amount: Amount) -> Money {
         Money { amount, currency: Currency::Dollar }
     }
 
-    fn times(&self, multiplier: u32) -> Money {
+    fn times(&self, multiplier: Amount) -> Money {
         Money { amount: &self.amount * multiplier, currency: self.currency.clone() }
     }
 
@@ -31,13 +33,6 @@ impl Money {
             augend: self.clone(),
             addend: addend.clone()
         }
-    }
-
-    fn reduce(&self, to: &Currency) -> Money {
-        let rate =
-            if self.currency == Currency::Franc && to == &Currency::Dollar { 2 }
-            else { 1 };
-        Money { amount: self.amount.clone() / rate, currency: to.clone() }
     }
 }
 
@@ -50,29 +45,49 @@ impl Expression {
     fn reduce(&self, bank: &Bank, to: &Currency) -> Money {
         match self {
             Expression::Money {money} => {
-                let rate =
-                    if money.currency == Currency::Franc && to == Currency::Dollar { 2 }
-                    else { 1 };
-                return Money { amount: money.amount.clone() * rate, currency: to.clone()}
+                let rate = bank.rate(&money.currency, to);
+                return Money { amount: money.amount.clone() / rate, currency: to.clone()}
             },
             Expression::Sum { augend, addend} =>
-                Money { amount: 0, currency: Currency::Dollar }
+                Money { amount: &augend.amount + &addend.amount, currency: Currency::Dollar }
         }
     }
 }
 
+#[derive(Hash, Eq, PartialEq, Debug)]
+struct Pair {
+    from: Currency,
+    to: Currency
+}
+
 struct Bank {
-    rates: HashMap<>
+    rates: HashMap<Pair, Amount>
 }
 
 impl Bank {
-    fn reduce(&self, source: &Expression, to: &Currency) -> Money {
-        match source {
-            Expression::Money { money} => money.clone(),
-            Expression::Sum { augend, addend } =>
-                Money { amount: addend.amount.clone() + augend.amount.clone(), currency: to.clone() }
+    fn new() -> Bank {
+        Bank {
+            rates: HashMap::new()
         }
+    }
 
+    fn reduce(&self, source: &Expression, to: &Currency) -> Money {
+        source.reduce(self, to)
+    }
+
+    fn add_rate(&mut self, from: Currency, to: Currency, rate: Amount) {
+        let p = Pair { from: from, to: to };
+        self.rates.insert(p, rate);
+    }
+
+    fn rate(&self, from: &Currency, to: &Currency) -> Amount {
+        if from == to {
+            1
+        } else {
+            *self.rates
+                .get(&Pair { from: from.clone(), to: to.clone() })
+                .unwrap()
+        }
     }
 }
 
@@ -88,7 +103,7 @@ mod tests {
     fn test_simple_addition() {
         let five = Money::dollar(5);
         let expression = five.plus(&five);
-        let bank = Bank{};
+        let bank = Bank::new();
         let reduced = bank.reduce(&expression, &Currency::Dollar);
         assert_eq!(Money::dollar(10), reduced);
     }
@@ -96,7 +111,7 @@ mod tests {
     #[test]
     fn test_reduce_sum() {
         let sum = Expression::Sum { augend: Money::dollar(3), addend: Money::dollar(4) };
-        let bank = Bank { rates: HashMap::new() };
+        let bank = Bank::new();
         let result = bank.reduce(&sum, &Currency::Dollar);
         assert_eq!(Money::dollar(7), result);
     }
@@ -117,8 +132,13 @@ mod tests {
     }
 
     #[test]
+    fn test_identity_rate() {
+        assert_eq!(1, Bank::new().rate(&Currency::Dollar, &Currency::Dollar));
+    }
+
+    #[test]
     fn test_reduce_money_different_currency() {
-        let bank = Bank {};
+        let mut bank = Bank::new();
         bank.add_rate(Currency::Franc, Currency::Dollar, 2);
         let result = bank.reduce( &Expression::Money { money: Money::franc(2) }, &Currency::Dollar);
         assert_eq!(Money::dollar(1), result);
