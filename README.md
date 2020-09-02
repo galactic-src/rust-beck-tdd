@@ -79,3 +79,33 @@ Carry out reducing a sum on the Bank object, using a Sum as a type of expression
 In Rust it makes more sense to just handle Sums for now and later create an Expression enum.
 
 ##### Chapter 14 - Change
+
+Introduces a HashMap of pairs to values. This feels a little complex to me, and a shame Pairs need implementing.
+
+##### Chapter 15 - Mixed Currencies
+
+Feels a little like you need to debug your own code by putting in the dummy implementations. Finding it hard to slow down enough.
+Also I suspect if you have experience working in the expressions domain you'll have a fair idea of how you want to implement it.
+
+##### Chapter 16 - Absraction, Finally
+
+Spotting duplication between your code and test code requires you not to move on until you are satisfied you have removed duplication.
+You need to be disciplined about how much you are working on at once, and avoid rabbit holes that leave a trail of dummy implementations.
+
+##### Chapter 17 - Money Retrospective
+
+Commentary on necessity of completeness of tests, more lax towards "edge". Also that code is never "done".
+A feature can and should be "done" though, and from that point of view the code needs to be in an acceptable state.
+I think we have tighter expectations of production-ready code than presented in the book.
+
+Interesting that feels he discovered a new way of solving the problem - I find that I tend towards familiar solutions,
+so this seems a legitimate benefit of TDD, albeit expensive a lot of the time.
+
+I absolutely agree with the power of metaphor in guiding implementation. Ultimately people need to be able to understand, modify and maintain code.
+Choosing intuitive metaphors is a powerful communication tool to minimise friction.
+
+##### Final key points summary
+
+- 3 approaches to making a test work: fake it, triangulation, obvious implementation
+- Remove duplication between test and code as a way to drive the design
+- Ability to control the gap between tests to increase traction when the road gets slippery and cruise faster when conditions are clear.

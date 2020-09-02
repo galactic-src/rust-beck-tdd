@@ -1,4 +1,5 @@
 use std::cmp::PartialEq;
+use std::collections::HashMap;
 
 #[derive(Clone, Debug, PartialEq)]
 enum Currency {
@@ -45,7 +46,24 @@ enum Expression {
     Sum {augend: Money, addend: Money}
 }
 
-struct Bank {}
+impl Expression {
+    fn reduce(&self, bank: &Bank, to: &Currency) -> Money {
+        match self {
+            Expression::Money {money} => {
+                let rate =
+                    if money.currency == Currency::Franc && to == Currency::Dollar { 2 }
+                    else { 1 };
+                return Money { amount: money.amount.clone() * rate, currency: to.clone()}
+            },
+            Expression::Sum { augend, addend} =>
+                Money { amount: 0, currency: Currency::Dollar }
+        }
+    }
+}
+
+struct Bank {
+    rates: HashMap<>
+}
 
 impl Bank {
     fn reduce(&self, source: &Expression, to: &Currency) -> Money {
@@ -78,7 +96,7 @@ mod tests {
     #[test]
     fn test_reduce_sum() {
         let sum = Expression::Sum { augend: Money::dollar(3), addend: Money::dollar(4) };
-        let bank = Bank {};
+        let bank = Bank { rates: HashMap::new() };
         let result = bank.reduce(&sum, &Currency::Dollar);
         assert_eq!(Money::dollar(7), result);
     }
