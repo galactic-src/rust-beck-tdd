@@ -32,6 +32,7 @@ enum Expression {
 }
 
 impl Expression {
+
     fn reduce(&self, bank: &Bank, to: &Currency) -> Money {
         match self {
             Expression::Money {money} => {
