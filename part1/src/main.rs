@@ -30,15 +30,15 @@ impl Money {
 
     fn plus(&self, addend: &Money) -> Expression {
         Expression::Sum {
-            augend: self.clone(),
-            addend: addend.clone()
+            augend: Box::new(Expression::Money { money: self.clone() }),
+            addend: Box::new(Expression::Money { money: addend.clone() })
         }
     }
 }
 
 enum Expression {
     Money {money: Money},
-    Sum {augend: Money, addend: Money}
+    Sum {augend: Box<Expression>, addend: Box<Expression>}
 }
 
 impl Expression {
@@ -49,7 +49,10 @@ impl Expression {
                 return Money { amount: money.amount.clone() / rate, currency: to.clone()}
             },
             Expression::Sum { augend, addend} =>
-                Money { amount: &augend.amount + &addend.amount, currency: Currency::Dollar }
+                Money {
+                    amount: &augend.reduce(bank, to).amount + &addend.reduce(bank, to).amount,
+                    currency: Currency::Dollar
+                }
         }
     }
 }
@@ -110,7 +113,7 @@ mod tests {
 
     #[test]
     fn test_reduce_sum() {
-        let sum = Expression::Sum { augend: Money::dollar(3), addend: Money::dollar(4) };
+        let sum = Expression::Sum { augend: Box::new(Expression::Money{money: Money::dollar(3)}), addend: Box::new(Expression::Money{money: Money::dollar(4)}) };
         let bank = Bank::new();
         let result = bank.reduce(&sum, &Currency::Dollar);
         assert_eq!(Money::dollar(7), result);
@@ -140,7 +143,21 @@ mod tests {
     fn test_reduce_money_different_currency() {
         let mut bank = Bank::new();
         bank.add_rate(Currency::Franc, Currency::Dollar, 2);
+
         let result = bank.reduce( &Expression::Money { money: Money::franc(2) }, &Currency::Dollar);
+
         assert_eq!(Money::dollar(1), result);
+    }
+
+    #[test]
+    fn test_mixed_addition() {
+        let five_bucks = Money::dollar(5);
+        let ten_francs = Money::franc(10);
+        let mut bank = Bank::new();
+        bank.add_rate(Currency::Franc, Currency::Dollar, 2);
+
+        let result = bank.reduce(&five_bucks.plus(&ten_francs), &Currency::Dollar);
+
+        assert_eq!(Money::dollar(10), result);
     }
 }
