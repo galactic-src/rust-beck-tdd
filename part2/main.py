@@ -25,6 +25,7 @@ class WasRun(TestCase):
 
     def test_method(self):
         self.wasRun = 1
+        self.log += "test_method "
 
 
 class TestCaseTest(TestCase):
@@ -37,8 +38,14 @@ class TestCaseTest(TestCase):
 
     def test_setup(self):
         self.test.run()
-        assert ("set_up " == self.test.log)
+        assert ("set_up test_method " == self.test.log)
+
+    def test_template_method(self):
+        test = WasRun("test_method")
+        test.run()
+        assert ("set_up test_method tear_down " == test.log)
 
 
 TestCaseTest("test_running").run()
 TestCaseTest("test_setup").run()
+TestCaseTest("test_template_method").run()
