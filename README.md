@@ -122,3 +122,11 @@ I wonder how much, for a project like this, you need some idea of "good" unit te
 
 Book is Python2 but I'm using Python3 here.
 
+##### Chapter 19 - Set The Table
+
+Good to recognise that often you can prioritise the consumer API (as written in the test code) or the code under test and there is a clear preference here while building the code to prioritise the tests - at least over performance.
+
+Added set_up functionality, including an (untested!) do-nothing implementation in the TestCase class.
+
+##### Chapter 20 - Cleaning Up After
+
