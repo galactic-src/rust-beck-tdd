@@ -110,3 +110,15 @@ Choosing intuitive metaphors is a powerful communication tool to minimise fricti
 - 3 approaches to making a test work: fake it, triangulation, obvious implementation
 - Remove duplication between test and code as a way to drive the design
 - Ability to control the gap between tests to increase traction when the road gets slippery and cruise faster when conditions are clear.
+
+
+## Part 2 - The xUnit Example
+
+##### Chapter 18 - First Steps to xUnit
+
+A little fumbling around based on prints to get us to the point that running things actually "runs a test", which makes sense. Acknowledged that actually he spent 6 hours learning some Python and trying steps out to get to refine the stepwise iteration for the book.
+
+I wonder how much, for a project like this, you need some idea of "good" unit testing features.
+
+Book is Python2 but I'm using Python3 here.
+
