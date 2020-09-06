@@ -146,4 +146,4 @@ Adding the setup call to our try block fixed the actual issue.
 
 ##### Chapter 23 - How Suite It Is
 
-
+Smart progression here - left it open ended for us to actually implement what he's been teaching us. Much nicer to end up with the suite having responsibility for the set of tests to be run.
