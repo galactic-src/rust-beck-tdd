@@ -130,4 +130,10 @@ Added set_up functionality, including an (untested!) do-nothing implementation i
 
 ##### Chapter 20 - Cleaning Up After
 
-Where did 'result' parameter for TestCase.run come from? And what happened to WasRun.wasRun? I'm no longer confident that my implementation matches what is expected. I think ultimately we have a single test which ensures that the 3 methods are all called and in the correct order.
+Where did 'result' parameter for TestCase.run come from? And what happened to WasRun.wasRun? I'm no longer confident that my implementation matches what is expected. I think ultimately we have a single test which ensures that the 3 methods are all called in the correct order.
+
+##### Chapter 21 - Counting
+
+This chapter felt more enjoyable - I had a decent sense of where we were going, and it felt like we were building more directly towards a solution. On the other hand, it was odd to finish up with a failing test.
+
+
