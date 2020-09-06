@@ -1,4 +1,6 @@
 **/target/
 
 **/venv/
-**/.idea
+**/.idea/
+**/__pycache__/
+**/*.pyc

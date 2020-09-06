@@ -143,3 +143,7 @@ There was a sneaky bit at the end of the chapter where he suggests that setup fa
 I introduced a method into my TestCaseTest which expects that the test runs without failures off the back of this - there might be a neater way.
 
 Adding the setup call to our try block fixed the actual issue.
+
+##### Chapter 23 - How Suite It Is
+
+

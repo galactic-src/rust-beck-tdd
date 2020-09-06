@@ -1,5 +1,6 @@
 from TestResult import TestResult
 from TestCase import TestCase
+from TestSuite import TestSuite
 
 
 class WasRun(TestCase):
@@ -33,41 +34,49 @@ class SetupFails(TestCase):
 
 class TestCaseTest(TestCase):
     def set_up(self):
-        self.test = WasRun("test_method")
+        self.result = TestResult()
 
     def test_template_method(self):
         test = WasRun("test_method")
-        test.run()
+        test.run(self.result)
         assert "set_up test_method tear_down " == test.log
 
     def test_result(self):
         test = WasRun("test_method")
-        result = test.run()
-        assert "1 run, 0 failed" == result.summary()
+        test.run(self.result)
+        assert "1 run, 0 failed" == self.result.summary()
 
     def test_failed_result(self):
         test = WasRun("test_broken_method")
-        result = test.run()
-        assert "1 run, 1 failed" == result.summary()
+        test.run(self.result)
+        assert "1 run, 1 failed" == self.result.summary()
 
     def test_failed_result_formatting(self):
-        result = TestResult()
-        result.test_started()
-        result.test_failed()
-        assert "1 run, 1 failed" == result.summary()
+        self.result.test_started()
+        self.result.test_failed()
+        assert "1 run, 1 failed" == self.result.summary()
 
     def test_failed_setup_result(self):
         test = SetupFails("test_method")
-        result = test.run()
-        assert "1 run, 1 failed" == result.summary()
+        test.run(self.result)
+        assert "1 run, 1 failed" == self.result.summary()
 
-    def run_without_failure(self):
-        result = self.run()
-        assert "1 run, 0 failed" == result.summary()
+    def test_suite(self):
+        test_suite = TestSuite()
+        test_suite.add(WasRun("test_method"))
+        test_suite.add(WasRun("test_broken_method"))
+
+        test_suite.run(self.result)
+        assert "2 run, 1 failed" == self.result.summary()
 
 
-TestCaseTest("test_template_method").run_without_failure()
-TestCaseTest("test_result").run_without_failure()
-TestCaseTest("test_failed_result_formatting").run_without_failure()
-TestCaseTest("test_failed_result").run_without_failure()
-TestCaseTest("test_failed_setup_result").run_without_failure()
+suite = TestSuite()
+suite.add(TestCaseTest("test_template_method"))
+suite.add(TestCaseTest("test_result"))
+suite.add(TestCaseTest("test_failed_result_formatting"))
+suite.add(TestCaseTest("test_failed_result"))
+suite.add(TestCaseTest("test_failed_setup_result"))
+
+suiteResult = TestResult()
+suite.run(suiteResult)
+print(suiteResult.summary())

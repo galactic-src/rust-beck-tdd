@@ -1,4 +1,5 @@
 from TestResult import TestResult
+from TestSuite import TestSuite
 
 
 class TestCase:
@@ -11,8 +12,7 @@ class TestCase:
     def tear_down(self):
         pass
 
-    def run(self):
-        result = TestResult()
+    def run(self, result):
         result.test_started()
         try:
             self.set_up()
@@ -20,7 +20,7 @@ class TestCase:
             method()
         except AssertionError:
             raise
-        except Exception:
+        except Exception as e:
+            print(e)
             result.test_failed()
         self.tear_down()
-        return result
