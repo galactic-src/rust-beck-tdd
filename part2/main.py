@@ -1,33 +1,5 @@
-
-class TestResult:
-    def __init__(self):
-        self.runCount = 0
-
-    def test_started(self):
-        self.runCount += 1
-
-    def summary(self):
-        return "{} run, 0 failed".format(self.runCount)
-
-
-class TestCase:
-    def __init__(self, name):
-        self.name = name
-
-    def set_up(self):
-        pass
-
-    def tear_down(self):
-        pass
-
-    def run(self):
-        result = TestResult()
-        result.test_started()
-        self.set_up()
-        method = getattr(self, self.name)
-        method()
-        self.tear_down()
-        return result
+from TestResult import TestResult
+from TestCase import TestCase
 
 
 class WasRun(TestCase):
@@ -46,6 +18,17 @@ class WasRun(TestCase):
 
     def test_broken_method(self):
         raise Exception
+
+
+class SetupFails(TestCase):
+    def __init__(self, name):
+        TestCase.__init__(self, name)
+
+    def set_up(self):
+        raise Exception
+
+    def test_method(self):
+        pass
 
 
 class TestCaseTest(TestCase):
@@ -67,7 +50,24 @@ class TestCaseTest(TestCase):
         result = test.run()
         assert "1 run, 1 failed" == result.summary()
 
+    def test_failed_result_formatting(self):
+        result = TestResult()
+        result.test_started()
+        result.test_failed()
+        assert "1 run, 1 failed" == result.summary()
 
-TestCaseTest("test_template_method").run()
-TestCaseTest("test_result").run()
-TestCaseTest("test_failed_result").run()
+    def test_failed_setup_result(self):
+        test = SetupFails("test_method")
+        result = test.run()
+        assert "1 run, 1 failed" == result.summary()
+
+    def run_without_failure(self):
+        result = self.run()
+        assert "1 run, 0 failed" == result.summary()
+
+
+TestCaseTest("test_template_method").run_without_failure()
+TestCaseTest("test_result").run_without_failure()
+TestCaseTest("test_failed_result_formatting").run_without_failure()
+TestCaseTest("test_failed_result").run_without_failure()
+TestCaseTest("test_failed_setup_result").run_without_failure()

@@ -136,4 +136,10 @@ Where did 'result' parameter for TestCase.run come from? And what happened to Wa
 
 This chapter felt more enjoyable - I had a decent sense of where we were going, and it felt like we were building more directly towards a solution. On the other hand, it was odd to finish up with a failing test.
 
+##### Chapter 22 - Dealing With Failure
 
+There was a sneaky bit at the end of the chapter where he suggests that setup failures be handled properly. Investigating this revealed that actually, using our original running mechanism, we are in fact silently catching failures anyway.
+
+I introduced a method into my TestCaseTest which expects that the test runs without failures off the back of this - there might be a neater way.
+
+Adding the setup call to our try block fixed the actual issue.
