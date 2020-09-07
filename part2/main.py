@@ -20,6 +20,9 @@ class WasRun(TestCase):
     def test_broken_method(self):
         raise Exception
 
+    def tear_down(self):
+        self.log += "tear_down "
+
 
 class SetupFails(TestCase):
     def __init__(self, name):
@@ -30,6 +33,20 @@ class SetupFails(TestCase):
 
     def test_method(self):
         pass
+
+
+class TestMethodFails(TestCase):
+    def __init__(self, name):
+        self.tear_down_ran = False
+        TestCase.__init__(self, name)
+
+    def test_method(self):
+        print('hello')
+        raise Exception
+
+    def tear_down(self):
+        print('tear_down')
+        self.tear_down_ran = True
 
 
 class TestCaseTest(TestCase):
@@ -61,13 +78,10 @@ class TestCaseTest(TestCase):
         test.run(self.result)
         assert "1 run, 1 failed" == self.result.summary()
 
-    def test_suite(self):
-        test_suite = TestSuite()
-        test_suite.add(WasRun("test_method"))
-        test_suite.add(WasRun("test_broken_method"))
-
-        test_suite.run(self.result)
-        assert "2 run, 1 failed" == self.result.summary()
+    def test_failed_method_runs_teardown(self):
+        test = TestMethodFails("test_method")
+        test.run(self.result)
+        assert test.tear_down_ran is True
 
 
 suite = TestSuite()
@@ -76,6 +90,7 @@ suite.add(TestCaseTest("test_result"))
 suite.add(TestCaseTest("test_failed_result_formatting"))
 suite.add(TestCaseTest("test_failed_result"))
 suite.add(TestCaseTest("test_failed_setup_result"))
+suite.add(TestCaseTest("test_failed_method_runs_teardown"))
 
 suiteResult = TestResult()
 suite.run(suiteResult)
