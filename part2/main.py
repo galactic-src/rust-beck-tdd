@@ -41,11 +41,9 @@ class TestMethodFails(TestCase):
         TestCase.__init__(self, name)
 
     def test_method(self):
-        print('hello')
         raise Exception
 
     def tear_down(self):
-        print('tear_down')
         self.tear_down_ran = True
 
 
