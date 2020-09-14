@@ -147,3 +147,33 @@ Adding the setup call to our try block fixed the actual issue.
 ##### Chapter 23 - How Suite It Is
 
 Smart progression here - left it open ended for us to actually implement what he's been teaching us. Much nicer to end up with the suite having responsibility for the set of tests to be run.
+
+##### Chapter 24 - xUnit Retrospective
+
+Very brief commentary more about xUnit and the benefits of implementing it as an exercise than comments about TDD.
+
+## Part 3 - Patterns For Test-Driven Development
+
+##### Chapter 25 - Test-Driven Development Patterns
+
+Relationship between testing, confidence in code or likelihood of bugs, and feedback via stress.
+If you don't do `test isolation`, you get bitten by sooner or later.
+The notion of a `test list` is new to me from this book, and something I plan to try.
+
+`Test first` I have always struggled with. It certainly seems more honest and perhaps you end up with more robust tests.
+But it also feels slower to implement to me. That's probably my own biases though - the time saved is probably more than swallowed by figuring out what tests I need to write after the fact.
+`Assert first` is interesting: writing tests by first writing the assert, then getting hold of the data for it; another one to try out.
+
+Keeping each constant for a single use in a particular test is something I suppose I already do - and I err towards named constants too. I think this helps document the intended behaviour better.
+I certainly agree that pre-calculated exepected values are harder to understand (as well as update) and I prefer a sum that shows where the expected value comes from (`evident data`).
+
+##### Chapter 26 - Red Bar Patterns
+
+Advice:
+- when looking for the next test from the list, pick the first test that you are confident you can implement, but you will learn something about the system you are implementing.
+- start with a do-nothing test
+- coaching to introduce TDD. Avoid evangelising or insisting, instead start asking for explanations of code in terms of tests.
+- `learning tests` of 3rd party interfaces you plan to use. Not sure whether better running prod code for this, to avoid being left with a unit test of the 3rd party. I would tend to incorporate this kind of test into my e2e tests. It can otherwise be hard to know how extensively to test a 3rd party lib.
+- writing a test when fixing a regression: generally I try to aim low in the testing pyramid here, but it's hard sometimes. And sometimes you can make a test that will prevent the issue in future, but doesn't tackle the root cause. So this is not always simple.
+
+Curious that advice around taking breaks and prioritising chairs in equipment budgets ended up in this chapter!
