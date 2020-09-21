@@ -177,3 +177,70 @@ Advice:
 - writing a test when fixing a regression: generally I try to aim low in the testing pyramid here, but it's hard sometimes. And sometimes you can make a test that will prevent the issue in future, but doesn't tackle the root cause. So this is not always simple.
 
 Curious that advice around taking breaks and prioritising chairs in equipment budgets ended up in this chapter!
+
+##### Chapter 27 - Testing Patterns
+
+_Child Test_: advises scrapping a high-level test in favour of red-green-refactor cycle.
+Generally I agree, but try to avoid writing the large test in the first place.
+By the time you are having to split up the work on a branch, you are often heading for a large PR.
+
+_Mock Object_: Absolutely, but mocked dependencies do not test the interaction boundary between classes.
+They are great for verifying granular behaviour, but it is easy for those tests to pass and still have a bug.
+Fewer, more sociable tests need to cover off key features, especially in a duck-typed language like Python.
+I have used the notion of a test suite applied to both mock and production objects for API testing, with some success, but a lot of boilerplate.
+
+_Self Shunt_: I'm quite cautious about this - I like my tests to have minimal logic to them.
+Ideally I'd use a spy object or mock method object to capture this kind of information, relying on battle-hardened test suite tools.
+In testing tools for many languages (including strictly-typed, there are now clever objects that can be generated on the fly to implement a mock version of a class.
+
+_Log String_: This feels at risk of needing updating and thinking about. I think method spies do this job better.
+
+_Crash Test Dummy_: Yes, absolutely worth testing exception handling, throwing exceptions with mock objects if required.
+
+_Broken Test_: I quite like this - I would often leave my laptop with a focused notepad open in the middle, with a sentence summarising what I was going to do next.
+
+_Clean Check-in_: I think throwing out your work because of a failing integration test sounds counter-productive.
+However, that might be because I haven't tried it! Incentivising regular check-ins is fine, but in a world with branches, CI and PR review, not sure this is necessary/helpful.
+
+
+##### Chapter 28 - Green Bar Patterns
+
+_Fake It ('Til You Make It)_: This tends to feel like one of the less efficient bits of TDD advice, to me.
+If you think about it in terms of the test suite being about as important as the production code,
+you can see this as a way to build/improve your test suite.
+I do broadly agree with starting with the simple case and building from there. I tend to keep the future features on a card rather than a test list though.
+
+_Triangulate_: I prefer this, generally, to faking it. And I like having multiple examples anyway, whether they are in a single or multiple tests.
+I've definitely been bitten by not testing the negative case of a conditional, for example.
+
+_Obvious Implementation_: This feels like my go-to but I'm sure that's partly confirmation bias.
+I usually have a clear idea what I'm going to write, but then I probably jump too quickly towards a less good implementation too.
+The red-green advice, to monitor how often you are failing tests with your "obvious" implementation is sound.
+
+_One to Many_: This is an example where it feels "obvious" to me that we'll need the collection, so I jump to it.
+Often I will split responsibility at the method level here though, so it works out, especially when I'm programming more imperatively.
+In a functional context, I think I would tend to go straight to the collection.
+
+
+##### Chapter 29 - xUnit Patterns
+
+_Assertion_: Agree that testing equality/equivalence is preferable to asserting inequality.
+I don't necessarily agree that everything should be tested using public-only methods.
+You end up making things public just _for_ testing (eww) and some classes have a single do-everything public entry-point, which makes for less granular tests.
+I've seen people introducing parameters to their production code solely used for testing too - which I would generally avoid as much as possible. 
+
+_Fixture_: I prefer to make factory() utilities that generate test objects than introduce hierarchy to my test classes.
+Like all test code I try to avoid complex logic. As such, I try not to have chains of method calls to setup data.
+I quite like builder objects to set up data in a readable way. Partial<> argument objects to configure fixtures are quite neat in TypeScript too.
+
+_External Fixture_: Yes, teardown is helpful. `pytest` also has a method `addCleanup()` to dynamically add a function call to happen after teardown.
+Good for managing resources that might be created during the test, rather than having to conditionally test for their presence.
+
+_Test Method_: Consistency is generally good for readability.
+I don't feel strongly about whether "test" should appear at the start or end of test method names.
+And I really love when languages give you scope to write test method names as sentences (like Kotlin).
+
+_Exception Test_: Really important to have ways to allow the code under test to spit out Errors, capture the error object and assert on it.
+
+_All Tests_: Having a mechanism to run everything in a consistent way (especially between local environment and CI)
+saves a lot of time.
