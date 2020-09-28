@@ -243,4 +243,35 @@ And I really love when languages give you scope to write test method names as se
 _Exception Test_: Really important to have ways to allow the code under test to spit out Errors, capture the error object and assert on it.
 
 _All Tests_: Having a mechanism to run everything in a consistent way (especially between local environment and CI)
-saves a lot of time.
+
+
+##### Chapter 30 - Design Patterns
+
+_Command_: These have become more mainstream as language features. Kotlin uses lambdas extensively, and futures/promises are commonplace.
+
+_Value Object_: Immutable objects are fundamental to functional implementations, and some languages have moved towards immutable-by-default.
+Kotlin `data classes` are very handy, for example.
+
+_Null Object_: In a language like Java where nullability was not encodable, this kind of thing would make a huge difference to code readability and safety.
+These are less essential now, with null guarded invocation etc.
+
+_Template Method_: I don't actually use this often. There's too much nuance in the method contracts when another developer needs to write an implementation (or I come back to it in a year).
+
+_Pluggable Object_: Fairly basic use of polymorphism to replace conditionals.
+
+_Pluggable Selector_: Reflection has (rightfully) become a bit of a dirty topic. It makes it harder to leverage IDEs. I would inject a printer implementation in the constructor.
+
+_Factory Method_: Absolutely, I use these all the time for test data setup.
+
+_Imposter_: Seems to be just making a call on when to extract an interface.
+
+_Composite_: In Java these tend to end up being rather painful, with methods wired through like React Prop Drilling.
+Some languages like Kotlin now allow direct delegation of interface methods to a specified field on an object, which is great, but I don't use it often.
+Most often it's when I need to decorate or modify an implementation from 3rd-party code.
+
+_Collecting Parameter_: I have used these in the past, but not generally for testing.
+They are helpful when you need to summarise several small results (e.g. trying a bulk job and reporting failures).
+
+_Singleton_: He's advising against Singletons. They are boilerplate magnets in order to keep tests separable, requiring resetting in `setUp`s.
+Most recently I've used one to set up a TestContainer to hold a database for integration testing, to be shared across the test suite.
+They do have their uses but I'd tend to agree with the author.
