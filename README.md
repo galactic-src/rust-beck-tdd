@@ -275,3 +275,81 @@ They are helpful when you need to summarise several small results (e.g. trying a
 _Singleton_: He's advising against Singletons. They are boilerplate magnets in order to keep tests separable, requiring resetting in `setUp`s.
 Most recently I've used one to set up a TestContainer to hold a database for integration testing, to be shared across the test suite.
 They do have their uses but I'd tend to agree with the author.
+
+##### Chapter 31 - Refactoring
+
+_Reconcile Differences_: I'm not super-strict about this if I am confident in my test coverage.
+If I do a big refactor and it breaks tests, and I mend the code until the tests pass, I'm usually pretty happy.
+Sometimes I do a large refactor on a branch and if it doesn't go well, do it more slowly.
+
+_Isolate Change_: Yes I totally agree with this. A preliminary part of a refactor is often to make the bit I want to change more accessible or malleable.
+In fact often this change improves separation of responsibilities anyway and goes in as a separate PR.
+
+_Migrate Data_: I don't know how valuable this is - it depends how many places need to change.
+If I have sensible factory methods that really helps with making these changes - I rarely feel the need to make a data adaptor.
+As for the example, I would usually jump to "many" as an "obvious" change, rather than have to do this juggling.
+
+_Extract Method_: I love that IDEs mostly field this for us these days!
+
+_Inline Method_: It's great when you have found some logic that you can get rid of, which simplifies a method so much it can disappear.
+I actually found `Clean Code` kind of hard to stomach because of how scattered it advocated making logic.
+The goal is almost always readability!
+
+_Extract Interface_: Yeah, this is sensible. Often I'll make an interface in a strongly-typed language so I can make a test/mock implementation.
+Good to wait until you need one though, rather than making them by default and cluttering things up.
+
+_Move Method_: This feels pretty obvious as a process, and in terms of need where all the logic is managed by a field object.
+
+_Method Object_: In my head, I don't see it so much as a method object as a class extraction, but yep.
+
+_Add Parameter_: Straightforward.
+
+_Method Parameter to Constructor Parameter_: This is closely tied to the _Method Object_ type change mentioned previously.
+I feel more comfortable doing this is the object isn't mutated by the methods, remaining constant for the lifetime of the object.
+I don't like it when the "entrypoint" to the object sets instance variables.
+
+##### Chapter 32 - Mastering TDD
+
+`"Write tests until fear is transformed into boredom"`: That's interesting, because fear is subjective, so different people will be comfortable with different coverage.
+I think test coverage should be relatively consistent for a project, with a natural tension between writing more for confidence and fewer for expediency.
+Test code needs maintaining, it's not a good idea to just keep writing them. Also for a system, tests tend to fall naturally into types of test.
+E.g. anything web-facing could reasonably have a layer of tests checking that certain requests in order produce certain responses.
+Part of PR should ensure that the project's test coverage expectations is being met. 
+
+`"The tests are a canary in a coal mine revealing by their distress the presence of evil design vapors"`:
+I don't know about this - I think you can write code to make it testable or not, and sure, if it's hard to test, the code should be refactored to make it more testable.
+It's possible to write simple-to-read code without making it testable, and generally more concise.
+But yeah, I think with the assumption that you want good regression coverage and documentation of intent, this is valid.
+I've experienced all of these things.
+I would add that some ways of writing tests lead to having to update a lot of tests to make a relatively simple code change.
+Avoiding constants directly in tests aside from those that the test relies on, and using test factories for input data help to
+make tests less fragile. Also avoiding testing order of methods called by code under test with specific arguments and rather trying to test intent helps.
+
+_TDD and frameworks_: I've not got enough experience of TDD to really see how the end-product might differ from a designed output.
+
+_How many tests_: I agree entirely that you think about test coverage based on severity of impact if something in the system goes wrong.
+Any data type has some caveats to consider, and you can test each of those caveats, or every combination.
+Ultimately for systems that _really_ matter, you can consider formal proofs, which take the caveats implicitly into account
+and force you to explicitly recognise the assumptions you are making about inputs.
+
+_Redundant tests_: I prefer to delete redundant tests to reduce the amount of code we are maintaining.
+
+_Application Test Driven Development_: I guess this is the precursor to BDD. I haven't had much experience of it, and don't really want to.
+I think it is hard for someone who isn't implementing a system to second-guess what a helpful unit to test is.
+
+_Testing systems that weren't designed for testability_: Oh the horror. Basically yes, system-level tests especially for core paths.
+Try to exercise mission-critical happy-path functionality in tests. Build lower-level test coverage towards the code you are working on.
+Trace code invocation in the areas you are making changes and get a good idea of any global mutable state.
+
+_emotional attachment to code_: Yeah I agree with this. Green field projects are a luxury because you don't have to deal with the state of the existing code.
+You are free to grow in any direction without fear of implosion. Over time it's very easy to end up disenchanted with a code base and tests _really_ help.
+
+_TDD rules by rote_: Yes I broadly agree. You can learn principles by word of mouth of what is good practice, or you can get burned along the way.
+Generally it's harder to learn a lesson well by rote (using purely logical processes and memory)
+and much easier to build good instincts off the back of a horrible experience wit ha code base. But it's worth a try doing it by rote in case it sticks.
+
+_Extreme Programming_: Generally sensible advice, I think. Nothing too controversial.
+
+_Darach's Challenge_: GUIs can be painful to to test if they are not designed with it in mind.
+Integration tests are pretty important to check your code integrates with external systems the way you think it does.
+However I don't think it's valuable to extensively test third-party code or generated code on a unit level - more integration/e2e.
